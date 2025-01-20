@@ -14,7 +14,7 @@ function Nav() {
           <small className="text-lg">Hi, Nick</small>
         </div>
         <div className="flex flex-row gap-4 items-center">
-          <Button className="bg-red-600 hover:bg-red-400">Sign Out</Button>
+          <Button variant={"destructive"}>Sign Out</Button>
         </div>
       </div>
       <Separator className="mb-4 " />
