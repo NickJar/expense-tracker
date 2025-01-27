@@ -1,72 +1,49 @@
-"use client";
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+// import { Button } from "@/components/ui/button";
+// import { currencyFormatter } from "@/lib/utils";
+// import ExpenseItem from "@/components/ExpenseItem";
+// import Modal from "@/components/Modal";
+// import { useState } from "react";
+import React from "react";
+import { auth0 } from "@/lib/auth0";
 import { Button } from "@/components/ui/button";
-import { currencyFormatter } from "@/lib/utils";
-import ExpenseItem from "@/components/ExpenseItem";
-import Modal from "@/components/Modal";
-import { useState } from "react";
+import MainPage from "@/components/MainPage";
 
-export default function Home() {
-  const [modalOpen, setModalState] = useState(false);
+export default async function Home() {
+  const session = await auth0.getSession();
 
-  const handleClick = () => {
-    if (modalOpen === true) {
-      setModalState(false);
-    } else {
-      setModalState(true);
-    }
-  };
+  if (!session) {
+    return (
+      <main className="flex justify-center items-center w-full h-screen bg-black p-6 gap-4">
+        <Card className="flex flex-col items-center justify-center p-6 w-[1000px] h-[600px]">
+          <CardHeader>
+            <CardTitle className="text-2xl font-bold">
+              Expense Tracker
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col items-center p-4 gap-2">
+            <div>
+              <a href="/auth/login?screen_hint=signup">
+                <Button>Sign up</Button>
+              </a>
+            </div>
+
+            <div>
+              <a href="/auth/login">
+                <Button variant={"outline"}>Log in</Button>
+              </a>
+            </div>
+          </CardContent>
+        </Card>
+      </main>
+    );
+  }
 
   return (
-    <main className="relative flex flex-col justify-center gap-4 container px-6 mx-auto">
-      <div className="flex flex-row gap-6 justify-center">
-        <div className="flex flex-col gap-6">
-          <Card className="w-[300px]">
-            <CardHeader>
-              <CardTitle>My Balance</CardTitle>
-              <CardDescription>Lorem Ipsum Delor</CardDescription>
-            </CardHeader>
-            <CardContent className="text-2xl font-bold">
-              <div className="text-center">{currencyFormatter(100000)}</div>
-              <div className="flex flex-col gap-4 p-4">
-                <div className="mx-auto" onClick={() => handleClick()}>
-                  <Button>+ Income</Button>
-                </div>
-                <div className="mx-auto" onClick={() => handleClick()}>
-                  <Button variant={"outline"}>+ Expenses</Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="w-[300px]">
-            <CardHeader>
-              <CardTitle>Lorem Ipsum</CardTitle>
-              <CardDescription>Lorem Ipsum Delor</CardDescription>
-            </CardHeader>
-            <CardContent className="text-2xl font-bold"></CardContent>
-          </Card>
-        </div>
-
-        <Card className="w-[600px] h-[560px]"></Card>
-      </div>
-
-      <div className="flex flex-col justify-center items-center gap-4">
-        <div onClick={() => handleClick()}>
-          <ExpenseItem name="Food" price={100} color="#4c5564" />
-        </div>
-
-        <div onClick={() => handleClick()}>
-          <ExpenseItem name="Valorant" price={1000} color="#999999" />
-        </div>
-      </div>
-      <Modal isOpen={modalOpen} closeModal={() => handleClick()} />
+    <main>
+      <MainPage />
     </main>
   );
 }
+
+// export default function Home() {
